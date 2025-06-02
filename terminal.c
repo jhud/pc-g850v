@@ -1,17 +1,17 @@
 /* Serial terminal program for SHARP PC-G850V calculator.*/
 
-#define R_RM '~'
+#define R_CM '~'
 
-/* Map hardware keyboard to ASCII characters.*/
+/* Map hardware keyboard to ASCII characters. Map unused keys to $ and & because we need it for AT commands.*/
 const char mapping[8][8] = {
-{ 0, 'A','Z', 0,   0,  'L', 'I', 'P'},
-{'Q','S','X', 0,   0,  ';', 'O', '<'},
-{'W','D','C','^',  0,   0,  'D', 'W'},
-{'E','F','V', 0,  '0', '1', '4', '7'},
-{'R','G','B','\t','.', '2', '5', '8'},
-{'T','H','N',' ', '=', '3', '6', '9'},
-{'Y','J','M', 0,  '+', '-', '*', '/'},
-{'U','K','.', 0,  '\n', 0 , R_RM,')'}
+{ 0, 'A','Z', '$', '$', 'L', 'I', 'P'},
+{'Q','S','X', '$', '$', ';', 'O', '<'},
+{'W','D','C', '^', '$', '(',  'D', 'W'},
+{'E','F','V', '&', '0', '1', '4', '7'},
+{'R','G','B','\t', '.', '2', '5', '8'},
+{'T','H','N', ' ', '=', '3', '6', '9'},
+{'Y','J','M', '&', '+', '-', '*', '/'},
+{'U','K','.', '&','\n', '(' , R_CM,')'}
 };
  
  /* Scan keyboard, return first pressed key. */
@@ -46,10 +46,10 @@ const char mapping[8][8] = {
   ser = fopen("stdaux1", "a+");
   
   if (ser) {
-	  printf("PCG-TERM started\nPress R-RM to exit");
+	  printf("PCG-TERM started\nPress R-CM to exit\n");
   }
   
-  while (keypress != R_RM) {
+  while (keypress != R_CM) {
    keypress = keyscan();
    if (keypress != 0 && lastKeypress == 0) {
 	  fputc(keypress, ser);
